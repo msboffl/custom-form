@@ -6,20 +6,23 @@ addRowButton.addEventListener("click", function () {
   const customForm = document.querySelector(".custom__form");
   const clonedForm = customForm.cloneNode(true);
 
-  // Insert the cloned form before the "+Add Row" button
+  // Append the cloned form to the form container
   const formContainer = document.getElementById("form-container");
-  formContainer.appendChild(clonedForm, addRowButton);
+  formContainer.appendChild(clonedForm);
 });
 
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("plus")) {
-    const plusButton = event.target;
-    const customForm = plusButton.closest(".custom__form");
-    const customFormSelect = document.createElement("div");
-    customFormSelect.classList.add("custom__form-select");
 
-    customFormSelect.innerHTML = `
-      <div class="custom__form-select">
+const plus = document.getElementById("plus");
+let clickPlusButton = 0;
+plus.addEventListener("click", function () {
+  clickPlusButton++;
+
+  const customForm = document.getElementById("custom__form");
+  const customFormSelect = document.createElement("div");
+  customFormSelect.classList.add("custom__form-select");
+
+  customFormSelect.innerHTML = `
+        <div class="custom__form-select" id="custom__select">
         <select name="" id="" class="select__container">
           <option>toggle</option>
           <option>yes/no</option>
@@ -35,8 +38,11 @@ document.addEventListener("click", function (event) {
         </div>
       </div>
     `;
-    // Insert the new column within the parent row
-    const customFormButtons = customForm.querySelector(".custom__form-buttons");
-    customForm.insertBefore(customFormSelect, customFormButtons);
+    
+  // Check if the click count reaches 20
+  if (clickPlusButton >= 20) {
+    plus.textContent = "";
+    plus.disabled = true;
   }
+  customForm.insertBefore(customFormSelect, customForm.firstChild);
 });
